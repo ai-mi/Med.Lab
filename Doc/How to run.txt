@@ -1,0 +1,15 @@
+Hvordan kjøre:
+
+1. Start Docker Compose (Postgres)
+docker-compose up -d
+
+2. Bygg og kjør API:
+
+cd src/Med.Labs.API
+dotnet run
+
+3. Åpne Swagger UI:
+http://localhost:5022/swagger
+
+4. Test CRUD + Queries direkte fra Swagger.
+

@@ -1,0 +1,14 @@
+# WebMed Labs - Event Sourcing / CQRS
+
+## Setup med Docker
+
+1. Kjør Postgres med Docker:
+```bash
+docker-compose up -d
+
+2. Sjekk at Postgress kjører:
+docker ps
+docker logs webmed_postgres
+
+3. Migrasjoner blir automatisk kjørt fra /migrations på init
+

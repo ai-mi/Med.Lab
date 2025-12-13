@@ -1,0 +1,62 @@
+Med.Labs/
+│
+├── Med.Labs.sln
+│
+├── src/
+│   ├── Med.Labs.Domain/
+│   │   ├── Aggregates/
+│   │   │   └── LaboratoryAggregate.cs
+│   │   ├── Events/
+│   │   │   └── LaboratoryResultAdded_v1.cs
+│   │   ├── Commands/
+│   │   │   ├── AddLaboratoryResultCommand.cs
+│   │   │   ├── UpdateLaboratoryResultCommand.cs
+│   │   │   └── DeleteLaboratoryResultCommand.cs
+│   │   ├── Snapshots/
+│   │   │   └── LaboratorySnapshot.cs
+│   │   └── Interfaces/
+│   │       └── IDomainEvent.cs
+│   │
+│   ├── Med.Labs.Application/
+│   │   ├── Handlers/
+│   │   │   ├── AddLaboratoryResultHandler.cs
+│   │   │   ├── UpdateLaboratoryResultHandler.cs
+│   │   │   └── DeleteLaboratoryResultHandler.cs
+│   │   └── Queries/
+│   │       └── LaboratoryQueryService.cs
+│   │
+│   ├── Med.Labs.Infrastructure/
+│   │   ├── EventStore/
+│   │   │   └── PostgresEventStore.cs
+│   │   ├── Snapshots/
+│   │   │   └── SnapshotStore.cs
+│   │   ├── Projections/
+│   │   │   └── LaboratoryProjectionHandler.cs
+│   │   ├── Upcasting/
+│   │   │   └── LabEventUpcaster_v1_to_v2.cs
+│   │   └── Outbox/
+│   │       └── OutboxPublisher.cs
+│   │
+│   └── Med.Labs.API/
+│       └── Program.cs
+│
+├── tests/
+│   └── Med.Labs.IntegrationTests/
+│       └── LaboratoryIntegrationTests.cs
+│
+├── migrations/
+│   ├── 001_init.sql
+│   ├── 002_add_indexes.sql
+│   └── 003_upcasting_v1.sql
+│
+├── docker-compose.yml
+├── MedLabs.postman_collection.json
+├── README.md
+│
+└── docs/
+    ├── 01_Overview.pdf
+    ├── 02_Architecture.pdf
+    ├── 03_EventFlow.pdf
+    ├── 04_CQRS_QueryFlow.pdf
+    ├── 05_EventVersioning.pdf
+    └── 06_PostmanTests.pdf
