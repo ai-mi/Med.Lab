@@ -17,7 +17,7 @@ Repository layout
 
 Build (local)
 1. Open a developer command prompt and go to repository root:
-   cd C:\\Work\\Test\\Med.Labs
+   cd C:\\Work\\Med.Labs
 2. Restore and build the solution:
    dotnet restore "Med.Labs.slnx"
    dotnet build "Med.Labs.slnx" --no-restore -c Release
@@ -26,13 +26,14 @@ Test (local)
 1. Run unit and integration tests:
    dotnet test "Med.Labs.slnx" --no-build -v minimal
 2. To run a specific test project, provide its path or project name:
-   dotnet test tests\\MyIntegrationTests\\MyIntegrationTests.csproj
+   dotnet test tests\\IntegrationTests\\Med.Labs.IntegrationTests.csproj
+   dotnet test tests\\UnitTests\\Med.Labs.UnitTests.csproj
 
 Run locally (dotnet run)
 1. From a service project folder (example):
-   cd src\\MyApi
-   dotnet run --urls "http://localhost:5000"
-2. Open http://localhost:5000 (or the configured port) in your browser or API client.
+   cd src\\Med.Labs.Api
+   dotnet run --urls "http://localhost:5022"
+2. Open http://localhost:5022 (or the configured port) in your browser or API client.
 
 Run with Docker Compose
 The repository includes a docker-compose.yml for local containerized runs.
