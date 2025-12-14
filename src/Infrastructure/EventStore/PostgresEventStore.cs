@@ -26,10 +26,33 @@ public class PostgresEventStore
 		var version = DateTime.UtcNow.Ticks;
 
 		await using var conn = new NpgsqlConnection(_connectionString);
-		await conn.ExecuteAsync(
-			"INSERT INTO event_store (id, aggregate_id, event_type, event_data, created_at, version) " +
-			"VALUES (@Id, @AggregateId, @Type, @Data::jsonb, NOW(), @Version)",
-			new { Id = id, AggregateId = aggregateId, Type = type, Data = data, Version = version });
+		await conn.OpenAsync();
+
+		// Ensure both event_store and outbox are written atomically
+		await using var tran = await conn.BeginTransactionAsync();
+		try
+		{
+			await conn.ExecuteAsync(
+				"INSERT INTO event_store (id, aggregate_id, event_type, event_data, created_at, version) " +
+				"VALUES (@Id, @AggregateId, @Type, @Data::jsonb, NOW(), @Version)",
+				new { Id = id, AggregateId = aggregateId, Type = type, Data = data, Version = version },
+				transaction: tran);
+
+			// Insert outbox record so OutboxPublisher can pick it up.
+			// Use the same id so correlation is trivial; set published = false.
+			await conn.ExecuteAsync(
+				"INSERT INTO outbox (id, payload, event_type, published, created_at) " +
+				"VALUES (@Id, @Data::jsonb, @Type, false, NOW())",
+				new { Id = id, Type = type, Data = data },
+				transaction: tran);
+
+			await tran.CommitAsync();
+		}
+		catch
+		{
+			await tran.RollbackAsync();
+			throw;
+		}
 	}
 
 	public async Task<IEnumerable<IDomainEvent>> LoadEvents(Guid aggregateId, int fromVersion = 0)

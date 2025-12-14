@@ -1,5 +1,6 @@
 using Med.Labs.Api.Configuration;
 using Med.Labs.Api.Middleware;
+using Med.Labs.Infrastructure.Outbox;
 using Microsoft.OpenApi;
 
 
@@ -19,6 +20,15 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHealthChecks();
 
 builder.Services.AddApiDependencies(builder.Configuration);
+
+// Resolve connection string from configuration (matches ServiceCollectionExtensions)
+var connectionString = builder.Configuration.GetConnectionString("db")
+					   ?? "Host=localhost;Port=5432;Database=med_labs;Username=med;Password=med";
+
+// Outbox publisher registration
+builder.Services.Configure<OutboxPublisherOptions>(cfg => cfg.PollIntervalSeconds = 5);
+builder.Services.AddSingleton<OutboxPublisher>(_ => new OutboxPublisher(connectionString));
+builder.Services.AddHostedService<OutboxPublisherHostedService>();
 
 var app = builder.Build();
 

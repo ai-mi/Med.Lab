@@ -27,12 +27,3 @@ CREATE TABLE IF NOT EXISTS laboratory_read_model (
     comment TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
-
--- Outbox
-CREATE TABLE IF NOT EXISTS outbox (
-    id UUID PRIMARY KEY,
-    event_type VARCHAR(255) NOT NULL,
-    payload JSONB NOT NULL,
-    published BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW()
-);
